@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script> </script>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+    <style>
+        #post {
+            width: 50%;
+            border-top: 1px solid black;
+            text-align: center;
+            margin: 0 auto;
+        }
+    </style>
+    <script src="/javascripts/h.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function update() {
+            $.ajax({
+            url:"/api/feed",
+            type:"GET",
+            dataType:"json",
+            success:function(data) {
+                console.log(data.message)
+                var st = "";
+                $.each(data, function(i, item) {
+                    st = st + "<div id=\"post\"><h3>" + item.author + " @ " + item.dateCreated + "</h3><p>" + item.message + "</p></div><br>";
+                });
+                $("#posts").html(st);
+                setTimeout(update, 10000);
+            }
+            })
+        }
+        function submitMsg() {
+            $("#posts").prepend("<div id=\"post\"><h3>YOU</h3><p>" + $("#message").val() + "</p></div><br>")
+            var formData = {
+                message: $("#message").val()
+            }
+            $.ajax({
+                type:"POST",
+                url: "/api/post",
+                data: formData,
+                dataType: "json",
+                success:function(formData) {
+                    console.log(formData);
+                }
+            });
+        }
+        $(document).ready(function() {
+            update();
+            $("#sub").click(submitMsg);
+        });
+    </script>
+    
+</head>
+<body>
+    <h1>test</h1>
+    <h2> <%= message  %> </h2>
+
+    <div id="msg">
+        <label>Post here</label>
+        <input id="message" type="text">
+        <button id="sub">Send</button>
+    </div>
+    <br>
+
+    <div id="posts">
+
+    </div>
+
+</html>
