@@ -11,11 +11,11 @@ var auth = function(req, res, next) {
     }
 }
 
-router.get("/", function(req, res, next) {
+router.get("/", function(req, res) {
     res.json('api');
 });
 
-router.get('/feed', auth, function(req, res, next) {
+router.get('/feed', auth, function(req, res) {
     Post.find({}).sort({dateCreated: -1}).lean().exec(function(err, posts) {
         if (!err) {
             res.send(JSON.stringify(posts));
@@ -25,7 +25,7 @@ router.get('/feed', auth, function(req, res, next) {
     });
 });
 
-router.post('/post', auth, function(req, res, next) {
+router.post('/post', auth, function(req, res) {
 
     var np = new Post({
         'author': req.session.name,

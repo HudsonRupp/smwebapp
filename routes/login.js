@@ -2,13 +2,11 @@ var express = require('express');
 var router = express.Router();
 var Account = require('../schemas/account.js')
 
-router.get("/", function(req, res, next) {
-    console.log("working");
-    res.render("login", {message: 'yuh'});
+router.get("/", function(req, res) {
+    res.render("login", {message: ''});
 });
 
-router.post("/", function(req, res, next) {
-    console.log(req.body.username + " " + req.body.password);
+router.post("/", function(req, res) {
     Account.findOne({'username': req.body.username}, function(err, doc) {
         if (err) console.error(err)
         if (!doc) {
@@ -23,7 +21,6 @@ router.post("/", function(req, res, next) {
             }
         }
     })
-    console.log("LOGIN " + req.body.username + " " + req.body.password);
 });
 
 module.exports = router;

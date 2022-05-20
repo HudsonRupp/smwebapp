@@ -10,11 +10,11 @@ var mongoose = require('mongoose')
 var session = require('express-session')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var homeRouter = require('./routes/home');
 var apiRouter = require('./routes/api')
+var soRouter = require('./routes/logout')
 
 var app = express();
 
@@ -33,11 +33,11 @@ app.use(session({
 }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/home', homeRouter);
 app.use('/api', apiRouter);
+app.use('/logout', soRouter);
 
 mongoose.connect(process.env.MONGO_URL);
 
